@@ -1,0 +1,28 @@
+<script lang="ts" setup>
+definePageMeta({
+  layout: 'logged',
+  middleware: 'auth'
+})
+type Movie = {
+  title: string
+  director: string
+  _id: string
+}
+
+const { data } = useAsyncData<Array<Movie>>('movies', async () => {
+  const res: Array<Movie> = await $fetch('/api/movies/all')
+  return res
+})
+</script>
+
+<template>
+  <div>Datatable</div>
+  <NuxtLink to="/create_movie">Créer un SUPER film</NuxtLink>
+  <v-data-table :items="data" v-if="data">
+    <template v-slot:item.action="{ value }">
+      <button>Editer</button>
+    </template>
+  </v-data-table>
+</template>
+
+<style scoped></style>

@@ -11,7 +11,7 @@ const registerForm = reactive({
 
 const submitForm = async () => {
   console.log(registerForm)
-  fetch('/api/user', {
+  fetch('/api/auth/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

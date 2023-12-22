@@ -1,7 +1,10 @@
 <script lang="ts" setup>
+import useAuth from '../store/useAuth'
 definePageMeta({
   layout: 'unlogged'
 })
+
+const { setUser } = useAuth()
 
 const loginForm = reactive({
   email: '',
@@ -9,7 +12,23 @@ const loginForm = reactive({
 })
 
 const submitForm = async () => {
-  console.log(loginForm)
+  const response = await fetch('/api/auth/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(loginForm)
+  })
+
+  const data = await response.json()
+
+  if (data.error) {
+    alert(data.error)
+  } else {
+    localStorage.setItem('token', data.id)
+    setUser(data.id)
+    navigateTo('/dashboard')
+  }
 }
 </script>
 
